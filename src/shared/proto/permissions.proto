@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package permission;
+
+option go_package = "permission/";
+
+// Permission Service definition
+service PermissionService {
+    // RPC to check if a user has permission for a file
+    rpc CheckPermission (CheckPermissionRequest) returns (CheckPermissionResponse);
+
+    // RPC to update permissions for a shared file or folder
+    rpc UpdatePermission (UpdatePermissionRequest) returns (UpdatePermissionResponse);
+}
+
+// Request to check if a user has permission for a file
+message CheckPermissionRequest {
+    uint64 user_id = 1;       // The user requesting access
+    string file_id = 2;       // The file to check permission for
+    string permission = 3;    // The type of permission (e.g., "read", "write", "delete")
+}
+
+// Response for permission check
+message CheckPermissionResponse {
+    bool has_permission = 1;  // True if the user has the required permission
+}
+
+// Request to update permissions for a file or folder
+message UpdatePermissionRequest {
+    uint64 owner_id = 1;          // The ID of the file owner
+    uint64 shared_user_id = 2;    // The ID of the user to share the file with (optional for file owner)
+    repeated string file_ids = 3; // List of file or folder IDs
+    repeated string permissions = 4; // List of permissions to grant (e.g., "read", "write", "delete")
+    bool is_owner = 5;            // Indicates whether the permission is being granted to the owner
+}
+
+// Response for permission update
+message UpdatePermissionResponse {
+    bool success = 1;             // True if the permission update was successful
+    string message = 2;           // Optional message in case of error or success details
+}

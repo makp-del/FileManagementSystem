@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: notification-vs
+  namespace: default
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - public-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /notify
+    route:
+    - destination:
+        host: notification.default.svc.cluster.local
+        port:
+          number: 80

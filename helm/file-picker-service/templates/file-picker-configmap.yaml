@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: file-picker-config
+data:
+  # Service Configuration
+  FILE_PICKER_SERVICE_PORT: "8080"
+
+  # Permissions Service
+  GRPC_PERMISSIONS_ADDRESS: "localhost:50051"
+
+  # File Downloader Service
+  GRPC_FILE_DOWNLOADER_ADDRESS: "localhost:50052"
+
+  # File Transformation Service
+  GRPC_TRANSFORMATION_ADDRESS: "localhost:50053"
+
+  # Notification Service
+  GRPC_NOTIFICATION_ADDRESS: "localhost:50054"

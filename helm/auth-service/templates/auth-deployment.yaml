@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: auth
+  name: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+      - image: auth:v1
+        imagePullPolicy: Always
+        name: auth
+        envFrom:
+          - configMapRef:
+              name: auth-service-config
+          - secretRef:
+              name: auth-service-secrets
+        volumeMounts:
+        - name: private-key
+          mountPath: /etc/private_key
+          readOnly: true
+      volumes:
+      - name: private-key
+        secret:
+          secretName: auth-secret-key

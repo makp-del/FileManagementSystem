@@ -1,0 +1,13 @@
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: permissions-verification
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: permission
+  jwtRules:
+  - issuer: {{ .Values.auth.issuer }}
+    forwardOriginalToken: True
+    jwks: #include your public key here

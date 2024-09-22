@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: file-transformation-config
+data:
+  # gRPC Server Configuration
+  SERVER_PORT: "50051"
+
+  # Logging Configuration
+  LOG_LEVEL: "info"
+  LOG_FORMAT: "text"
+
+  # Other Service Configurations
+  TRANSFORMATION_TIMEOUT: "30"  # Timeout for each transformation (in seconds)

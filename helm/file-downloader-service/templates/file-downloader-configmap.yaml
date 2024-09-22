@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: file-downloader-config
+data:
+  # gRPC Server Configuration
+  SERVER_PORT: "50051"
+
+  # Logging Configuration
+  LOG_LEVEL: "info"
+  LOG_FORMAT: "text"
+
+  # File Downloader Service Configuration
+  FILE_DOWNLOADER_SERVICE_PORT: "50052"
+
+  # Notification Service Address
+  NOTIFICATION_SERVICE_ADDRESS: "localhost:50054"

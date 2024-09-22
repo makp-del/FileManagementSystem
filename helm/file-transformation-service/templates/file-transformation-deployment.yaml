@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: file-transformation
+  name: file-transformation
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: file-transformation
+  template:
+    metadata:
+      labels:
+        app: file-transformation
+    spec:
+      containers:
+      - image: file-transformation:v1
+        name: file-transformation
+        envFrom:
+          # Load non-sensitive environment variables from ConfigMap
+          - configMapRef:
+              name: file-transformation-config

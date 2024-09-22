@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: downloader
+  name: downloader
+spec:
+  replicas: 3  # Keep 3 replicas for high availability
+  selector:
+    matchLabels:
+      app: downloader
+  template:
+    metadata:
+      labels:
+        app: downloader
+    spec:
+      containers:
+      - image: downloader:v1
+        name: downloader
+        ports:
+        - containerPort: 8080  # Expose container port
+        resources:             # Resource limits and requests
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "1000m"
+        readinessProbe:        # Readiness probe to check if the service is ready
+          httpGet:
+            path: /health  # Adjust this based on actual health endpoint
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        envFrom:
+          - configMapRef:
+              name: file-downloader-config
+          - secretRef:
+              name: file-downloader-secrets
+        livenessProbe:         # Liveness probe to ensure the service is responsive
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10

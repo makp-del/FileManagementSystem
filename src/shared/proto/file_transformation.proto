@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package filetransformation;
+
+option go_package = "transformation/";
+
+// File Transformation Service definition
+service FileTransformationService {
+    rpc TransformFile (TransformFileRequest) returns (TransformFileResponse);
+}
+
+// Request to transform a file
+message TransformFileRequest {
+    string file_id = 1;  // File ID to be transformed
+    string file_path = 2;  // Path to the file to be transformed
+    string transformation_type = 3;  // Type of transformation (e.g., "OCR", "image_recognition")
+}
+
+// Response after file transformation
+message TransformFileResponse {
+    string status = 1;  // Status of the transformation (e.g., "completed", "in_progress")
+    string message = 2;  // Additional message about the transformation
+}

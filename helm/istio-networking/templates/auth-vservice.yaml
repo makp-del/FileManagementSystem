@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: auth-vs
+  namespace: default
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - public-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /token
+    rewrite:
+      uri: /api/token
+    route:
+    - destination:
+        host: auth-service.default.svc.cluster.local
+        port:
+          number: 80

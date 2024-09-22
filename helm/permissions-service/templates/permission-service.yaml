@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: permission-service
+spec:
+  type: ClusterIP
+  selector:
+    app: permission
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

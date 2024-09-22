@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: jwt-verification
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: auth
+  jwtRules:
+  - issuer: {{ .Values.auth.issuer }}
+    forwardOriginalToken: True
+    jwks: #include your public key here
+      

@@ -1,0 +1,85 @@
+# Default values for file-picker-service.
+
+replicaCount: 3  # Match the replica count in your deployment.yaml
+
+image:
+  repository: file-picker  # Ensure this matches your image name, not nginx
+  pullPolicy: IfNotPresent
+  tag: v1  # Ensure the correct version tag
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # Uncomment if you want strict security settings
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP  # Correct for internal service
+  port: 80         # External port exposed by the service
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: file-picker-service.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources:
+  limits:
+    cpu: "1000m"
+    memory: "256Mi"
+  requests:
+    cpu: "500m"
+    memory: "128Mi"
+
+livenessProbe:
+  httpGet:
+    path: /health  # Ensure you have a /health endpoint in your application
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /health  # Same /health endpoint for readiness
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+volumes: []
+volumeMounts: []
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

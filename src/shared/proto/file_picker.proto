@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package filepicker;
+
+option go_package = "filepicker/";
+
+// File Picker Service definition
+service FilePickerService {
+    rpc UploadFile (UploadFileRequest) returns (UploadFileResponse);
+    rpc ListFiles (ListFilesRequest) returns (ListFilesResponse);
+    rpc RequestFileDownload (FileDownloadRequest) returns (FileDownloadResponse);
+}
+
+// Request for uploading a file
+message UploadFileRequest {
+    string file_name = 1;
+    string owner_id = 2;
+    bytes file_data = 3;  // Raw file data
+}
+
+// Response for uploading a file
+message UploadFileResponse {
+    string message = 1;
+}
+
+// Request to list files for a user
+message ListFilesRequest {
+    string user_id = 1;
+}
+
+// Response for listing files
+message ListFilesResponse {
+    repeated FileMetadata files = 1;
+}
+
+// File metadata message
+message FileMetadata {
+    string file_id = 1;
+    string file_name = 2;
+    string owner_id = 3;
+    string upload_time = 4;
+}
+
+// Request to download a file (this will trigger the file-downloader-service)
+message FileDownloadRequest {
+    string file_id = 1;
+    string provider = 2;    // Cloud provider (e.g., "google_drive", "dropbox")
+    string auth_token = 3;  // Authentication token for cloud provider
+}
+
+// Response for downloading a file
+message FileDownloadResponse {
+    string file_path = 1;   // Local file path after download
+}

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: permission
+  name: permission
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: permission
+  template:
+    metadata:
+      labels:
+        app: permission
+    spec:
+      containers:
+      - name: permission
+        image: permission-service:v1
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: permission-service-config
+          - secretRef:
+              name: permission-service-secrets
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+          requests:
+            cpu: "200m"
+            memory: "128Mi"

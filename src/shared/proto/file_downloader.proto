@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package filedownloader;
+
+option go_package = "filedownloader/";
+
+// File Downloader Service definition
+service FileDownloaderService {
+    rpc DownloadFile (DownloadFileRequest) returns (DownloadFileResponse);
+}
+
+// Request for downloading a file
+message DownloadFileRequest {
+    string file_id = 1;     // File ID in the cloud provider
+    string provider = 2;    // Cloud provider (e.g., "google_drive", "dropbox")
+    string auth_token = 3;  // Access token for the cloud provider
+}
+
+// Response for downloading a file
+message DownloadFileResponse {
+    string file_path = 1;   // Local file path where the file is saved
+}

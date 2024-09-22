@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: permission-service-config
+data:
+  # Service Configuration
+  PERMISSION_SERVICE_PORT: "50053"

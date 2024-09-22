@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: notification
+  name: notification
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+      - image: notification:v1
+        name: notification
+        ports:
+        - containerPort: 50054   # Expose WebSocket port
+        - containerPort: 50055
+        envFrom:
+          - configMapRef:
+              name: notification-service-config
+          - secretRef:
+              name: notification-service-secrets   # Expose gRPC port
+        resources:               # Define resource requests and limits (optional)
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "1000m"
+        readinessProbe:           # Ensure the service is ready before sending traffic
+          httpGet:
+            path: /health
+            port: 50054
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:            # Restart the container if it becomes unresponsive
+          httpGet:
+            path: /health
+            port: 50054
+          initialDelaySeconds: 5
+          periodSeconds: 10

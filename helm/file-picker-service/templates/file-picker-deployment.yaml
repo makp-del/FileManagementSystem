@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: file-picker
+  name: file-picker
+spec:
+  replicas: 3  # Good for high availability
+  selector:
+    matchLabels:
+      app: file-picker
+  template:
+    metadata:
+      labels:
+        app: file-picker
+    spec:
+      containers:
+      - image: file-picker:v1  # Ensure you are using the correct image
+        name: file-picker
+        ports:
+        - containerPort: 8080  # Expose the correct port
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "1000m"
+        readinessProbe:  # Ensure the service is ready to serve traffic
+          httpGet:
+            path: /health  # Assuming you have a /health endpoint for readiness
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        envFrom:
+          - configMapRef:
+              name: file-picker-config
+          - secretRef:
+              name: file-picker-secrets
+        livenessProbe:  # Ensure the service is healthy
+          httpGet:
+            path: /health  # Same /health endpoint for liveness
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10

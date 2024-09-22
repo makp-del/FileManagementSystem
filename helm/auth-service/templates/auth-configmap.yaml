@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-service-config
+data:
+  # JWT Configuration
+  JWT_ISSUER: "my-issuer"
+  PRIVATE_KEY_FILEPATH: "/etc/keys/private_key.pem"  # Assuming the private key is mounted as a volume
+
+  # Admin User Credentials (non-sensitive, but you should keep passwords in Secrets)
+  ADMIN_USERNAME: "admin"
+  ADMIN_EMAIL: "admin@example.com"
+
+  # Logging Configuration
+  LOG_LEVEL: "info"
+  LOG_FORMAT: "text"
+
+  # Database Configuration (if using a database)
+  DB_HOST: "localhost"
+  DB_PORT: "5432"
+  DB_USER: "user"
+  DB_NAME: "auth_service"

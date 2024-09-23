@@ -11,7 +11,7 @@ spec:
   http:
   - match:
     - uri:
-        prefix: # TODO : define API /file-picker
+        prefix: /file-picker
     route:
     - destination:
         host: file-picker-service.default.svc.cluster.local

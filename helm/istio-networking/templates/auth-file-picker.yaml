@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: auth
+      app: file-picker
   jwtRules:
   - issuer: {{ .Values.auth.issuer }}
     forwardOriginalToken: True
